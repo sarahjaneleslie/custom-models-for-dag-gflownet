@@ -61,6 +61,12 @@ def get_data(name, args, rng=default_rng()):
         )
         data = pd.read_csv(filename, delimiter=' ', dtype='category')
         score = 'bde'
+        
+    elif name == "custom":
+
+        graph = args.model
+        data = args.samples
+        score = args.score
     
     else:
         raise ValueError(f'Unknown graph type: {name}')
