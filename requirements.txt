@@ -9,3 +9,5 @@ pgmpy
 networkx
 tqdm
 scikit-learn
+matplotlib
+ipykernel
