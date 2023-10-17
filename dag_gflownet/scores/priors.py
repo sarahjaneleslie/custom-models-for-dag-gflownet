@@ -3,7 +3,7 @@ import math
 
 from scipy.special import gammaln
 
-from dag_gflownet.scores.base import BasePrior
+from dag_gflownet.scores.base import BasePrior, AdjacencyPrior
 
 
 class UniformPrior(BasePrior):
@@ -53,3 +53,22 @@ class FairPrior(BasePrior):
                 + gammaln(all_parents + 1)
             )
         return self._log_prior
+    
+
+class SprinklerPrior(AdjacencyPrior):
+    def __init__(self, num_variables=3):
+        super().__init__(num_variables)
+        self.logits_array = np.array([[0,0,0],[-1e2,0,0],[-1e2,-1e2,0]])
+
+    def log_prior(self, key):
+        target, indices = key
+        return np.sum(self.logits_array[indices, target])
+
+class CustomAdjPrior(AdjacencyPrior):
+    def __init__(self, logits_array):
+        super().__init__(logits_array.shape[0])
+        self.logits_array = logits_array
+
+    def log_prior(self, key):
+        target, indices = key
+        return np.sum(self.logits_array[indices, target])

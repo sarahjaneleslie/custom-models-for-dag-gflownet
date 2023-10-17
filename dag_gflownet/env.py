@@ -95,6 +95,8 @@ class GFlowNetDAGEnv(gym.vector.VectorEnv):
 
     def step(self, actions):
         sources, targets = divmod(actions, self.num_variables)
+        #print(f"sources: {sources}")
+        #print(f"targets: {targets}")
         keys, local_cache, data = self.local_scores_async(sources, targets)
         dones = (sources == self.num_variables)
         sources, targets = sources[~dones], targets[~dones]
@@ -130,6 +132,11 @@ class GFlowNetDAGEnv(gym.vector.VectorEnv):
         self._state['num_edges'] += 1
         self._state['num_edges'][dones] = 0
 
+        #print(f"{keys=}")
+        #print(f"{data=}")
+        #print(f"{local_cache=}")
+        #print(self._state["adjacency"])
+
         # Get the difference of log-rewards. The environment returns the
         # delta-scores log R(G_t) - log R(G_{t-1}), corresponding to a local
         # change in the scores. This quantity can be used directly in the loss
@@ -160,6 +167,7 @@ class GFlowNetDAGEnv(gym.vector.VectorEnv):
                 indices_after = list(indices)
                 bisect.insort(indices_after, source)
                 indices_after = tuple(indices_after)
+                
 
                 if not self._is_in_cache((target, indices_after), local_cache):
                     if not self._is_in_cache((target, indices), local_cache):
@@ -181,7 +189,7 @@ class GFlowNetDAGEnv(gym.vector.VectorEnv):
                     queued_data.append((target,) + data)
                     if self.num_workers > 0:
                         self.in_queue.put((target,) + data)
-
+                
                 key = (target, indices, indices_after)
 
             keys.append(key)

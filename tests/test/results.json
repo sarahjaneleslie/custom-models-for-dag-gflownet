@@ -1,1 +1,1 @@
-"No ground truth provided."
+{"expected_shd": 0.0, "expected_edges": 3.0, "fpr": [0.0, 0.0, 1.0], "tpr": [0.0, 1.0, 1.0], "roc_auc": 1.0, "precision": [0.3333333333333333, 1.0, 1.0], "recall": [1.0, 1.0, 0.0], "prc_auc": 1.0, "ave_prec": 1.0}

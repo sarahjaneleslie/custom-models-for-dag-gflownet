@@ -9,7 +9,9 @@ def get_prior(name, **kwargs):
         'uniform': priors.UniformPrior,
         'erdos_renyi': priors.ErdosRenyiPrior,
         'edge': priors.EdgePrior,
-        'fair': priors.FairPrior
+        'fair': priors.FairPrior,
+        "sprinkler": priors.SprinklerPrior,
+        "custom_adj": priors.CustomAdjPrior
     }
     return prior[name](**kwargs)
 

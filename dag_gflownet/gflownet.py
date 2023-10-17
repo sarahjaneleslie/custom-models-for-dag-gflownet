@@ -2,6 +2,7 @@ import jax.numpy as jnp
 import haiku as hk
 import optax
 
+
 from collections import namedtuple
 from functools import partial
 from jax import grad, random, vmap, jit
@@ -85,6 +86,7 @@ class DAGGFlowNet:
 
         # Sample actions
         actions = batch_random_choice(subkey2, jnp.exp(log_pi), masks)
+        
 
         logs = {
             'is_exploration': is_exploration.astype(jnp.int32),

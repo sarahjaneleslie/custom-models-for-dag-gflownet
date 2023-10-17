@@ -62,9 +62,50 @@ class BasePrior(ABC):
     def __init__(self, num_variables=None):
         self._num_variables = num_variables
         self._log_prior = None
+        self.adjacency_prior = False
 
     def __call__(self, num_parents):
         return self.log_prior[num_parents]
+
+    @property
+    @abstractmethod
+    def log_prior(self):
+        pass
+
+    @property
+    def num_variables(self):
+        if self._num_variables is None:
+            raise RuntimeError('The number of variables is not defined.')
+        return self._num_variables
+
+    @num_variables.setter
+    def num_variables(self, value):
+        self._num_variables = value
+
+
+#NEW
+
+class AdjacencyPrior(ABC):
+    """Adjacency Prior class for the prior over graphs p(G).
+    
+    Any subclass of `Adjacency Prior` must return the contribution of log p(G) 
+    for a given target and set of indices (parents of target). Any subclass must 
+    specify an array of size num_variables x num_variable with the logits for adding
+    a given edge to the graph. 
+    
+    Parameters
+    ----------
+    num_variables : int (optional)
+        The number of variables in the graph. If not specified, this gets
+        populated inside the scorer class.
+    """
+    def __init__(self, num_variables=None):
+        self._num_variables = num_variables
+        #self._log_prior = None
+        self.adjacency_prior = True
+
+    def __call__(self, key):
+        return self.log_prior(key)
 
     @property
     @abstractmethod
